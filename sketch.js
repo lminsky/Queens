@@ -101,7 +101,8 @@ function check() {
     firebase.initializeApp(config);
     var game = {
       name: name,
-      queens: q
+      queens: q,
+      timestamp: firebase.database.ServerValue.TIMESTAMP
     };
     firebase.database().ref('wins/').push(game);
     nameRecorded = true;
