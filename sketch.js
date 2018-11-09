@@ -27,15 +27,15 @@ function draw() {
 
   if(showGuides) {
     fill(255, 0, 0);
-    var guideDiameter = 8;
+    var guideDiameter = s/15;
     for(i in q) {
       for(var j = 0; j < 8; j++) {
-        ellipse(50+j*s, 50+q[i].row*s, guideDiameter);
-        ellipse(50+q[i].col*s, 50+j*s, guideDiameter);
-        ellipse(50+(q[i].col+j)*s, 50+(q[i].row+j)*s, guideDiameter);
-        ellipse(50+(q[i].col-j)*s, 50+(q[i].row+j)*s, guideDiameter);
-        ellipse(50+(q[i].col+j)*s, 50+(q[i].row-j)*s, guideDiameter);
-        ellipse(50+(q[i].col-j)*s, 50+(q[i].row-j)*s, guideDiameter);
+        ellipse(s/2+j*s, s/2+q[i].row*s, guideDiameter);
+        ellipse(s/2+q[i].col*s, s/2+j*s, guideDiameter);
+        ellipse(s/2+(q[i].col+j)*s, s/2+(q[i].row+j)*s, guideDiameter);
+        ellipse(s/2+(q[i].col-j)*s, s/2+(q[i].row+j)*s, guideDiameter);
+        ellipse(s/2+(q[i].col+j)*s, s/2+(q[i].row-j)*s, guideDiameter);
+        ellipse(s/2+(q[i].col-j)*s, s/2+(q[i].row-j)*s, guideDiameter);
       }
     }
   }
@@ -53,7 +53,7 @@ function draw() {
     } else {
       fill(255, 0, 0);
     }
-    ellipse(50 + q[i].col*s, 50 + q[i].row*s, 50, 50);
+    ellipse(s/2 + q[i].col*s, s/2 + q[i].row*s, s/2);
   }
 
   fill(0);
