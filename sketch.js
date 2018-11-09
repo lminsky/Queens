@@ -5,8 +5,11 @@ var nameRecorded = false;
 var showGuides = false;
 
 function setup() {
-  // put setup code here
-  createCanvas(windowWidth, windowHeight);
+  if(windowWidth > windowHeight * 1.3) {
+    createCanvas(windowWidth, windowHeight);
+  } else {
+    createCanvas(windowHeight * 1.3, windowHeight);
+  }
   s = height/8;
   noStroke();
 }
@@ -133,4 +136,13 @@ function check() {
     firebase.database().ref('wins/').push(game);
     nameRecorded = true;
   }
+}
+
+function windowResized() {
+  if(windowWidth > windowHeight * 1.3) {
+    resizeCanvas(windowWidth, windowHeight);
+  } else {
+    resizeCanvas(windowHeight * 1.3, windowHeight);
+  }
+  s = height/8;
 }
