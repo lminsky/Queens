@@ -63,7 +63,7 @@ function draw() {
 }
 
 function keyPressed() {
-  if(key == "Escape") {
+  if(keyCode == 27) {
    showGuides = !showGuides;; 
   }
 }
