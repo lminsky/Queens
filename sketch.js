@@ -3,6 +3,7 @@ var win = false;
 var s;
 var nameRecorded = false;
 var showGuides = false;
+var numSquares = 8;
 
 function setup() {
   if(windowWidth > windowHeight * 1.3) {
@@ -10,14 +11,17 @@ function setup() {
   } else {
     createCanvas(windowHeight * 1.3, windowHeight);
   }
-  s = height/8;
+  var search = int(location.search.substring(1));
+  console.log(search);
+  if(search > 1 && search < 20) numSquares = search;
+  s = height/numSquares;
   noStroke();
 }
 
 function draw() {
   background(0);
-  for(var i = 0; i < 8; i++) {
-    for(var j = 0; j < 8; j++) {
+  for(var i = 0; i < numSquares; i++) {
+    for(var j = 0; j < numSquares; j++) {
       if((i+j)%2 == 0) {
         fill(255);
         rect(i * s, j * s, s, s);
@@ -29,7 +33,7 @@ function draw() {
     fill(255, 0, 0);
     var guideDiameter = s/15;
     for(i in q) {
-      for(var j = 0; j < 8; j++) {
+      for(var j = 0; j < numSquares; j++) {
         ellipse(s/2+j*s, s/2+q[i].row*s, guideDiameter);
         ellipse(s/2+q[i].col*s, s/2+j*s, guideDiameter);
         ellipse(s/2+(q[i].col+j)*s, s/2+(q[i].row+j)*s, guideDiameter);
@@ -59,9 +63,9 @@ function draw() {
   fill(0);
   textAlign(CENTER, CENTER);
   textSize(30);
-  text("Try to put down eight queens so that none of them can take any of the others.", height + 10, 50, width-height-20);
+  text("Try to put down " + numSquares + " queens so that none of them can take any of the others.", height + 10, 50, width-height-20);
   textSize(48);
-  text("Remaining: " + (8 - q.length), height + 10, height/2, width-height-20);
+  text("Remaining: " + (numSquares - q.length), height + 10, height/2, width-height-20);
   textSize(16);
   text("(Press escape to toggle guides)", height + 10, height-150, width-height-20);
   
@@ -70,7 +74,7 @@ function draw() {
 
 function keyPressed() {
   if(keyCode == 27) {
-   showGuides = !showGuides;; 
+   showGuides = !showGuides; 
   }
 }
 
@@ -90,7 +94,7 @@ function mousePressed() {
       }
     }
     if(index == -1) {
-      if(q.length < 8) {
+      if(q.length < numSquares) {
         q.push(click);
       }
     } else {
@@ -103,7 +107,7 @@ function check() {
   for(i in q) {
     q[i].bad = false;
   }
-  if(q.length == 8) {
+  if(q.length == numSquares) {
     win = true;
   }
   for(i in q) {
@@ -131,6 +135,7 @@ function check() {
     var game = {
       name: name,
       queens: q,
+      size: numSquares,
       timestamp: firebase.database.ServerValue.TIMESTAMP
     };
     firebase.database().ref('wins/').push(game);
@@ -144,5 +149,22 @@ function windowResized() {
   } else {
     resizeCanvas(windowHeight * 1.3, windowHeight);
   }
-  s = height/8;
+  s = height/numSquares;
+}
+
+function permutate(arr) {
+  if(arr.length == 1) return [arr];
+  var perms = [];
+
+  for(i in arr) {
+    var first = arr[i];
+    var temp = arr.slice();
+    temp.splice(i, 1);
+    temp = permutate(temp);
+    for(j in temp) {
+      temp[j].unshift(first);
+      perms.push(temp[j]);
+    }
+  }
+  return perms;
 }
