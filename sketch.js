@@ -13,7 +13,6 @@ function setup() {
 
 function draw() {
   background(0);
-  fill(240);
   for(var i = 0; i < 8; i++) {
     for(var j = 0; j < 8; j++) {
       if((i+j)%2 == 0) {
@@ -24,20 +23,21 @@ function draw() {
   }
 
   if(showGuides) {
-    stroke(255, 0, 0, 100);
-    strokeWeight(5);
+    fill(255, 0, 0);
+    var guideDiameter = 8;
     for(i in q) {
-      line(50+q[i].col*s, 0, 50+q[i].col*s, height);
-      line(0, 50+q[i].row*s, height, 50+q[i].row*s);
-      line(50+q[i].col*s - height, 50+q[i].row*s-height, 50+q[i].col*s + height, 50+q[i].row*s + height);
-      line(50+q[i].col*s - height, 50+q[i].row*s+height, 50+q[i].col*s + height, 50+q[i].row*s - height);
+      for(var j = 0; j < 8; j++) {
+        ellipse(50+j*s, 50+q[i].row*s, guideDiameter);
+        ellipse(50+q[i].col*s, 50+j*s, guideDiameter);
+        ellipse(50+(q[i].col+j)*s, 50+(q[i].row+j)*s, guideDiameter);
+        ellipse(50+(q[i].col-j)*s, 50+(q[i].row+j)*s, guideDiameter);
+        ellipse(50+(q[i].col+j)*s, 50+(q[i].row-j)*s, guideDiameter);
+        ellipse(50+(q[i].col-j)*s, 50+(q[i].row-j)*s, guideDiameter);
+      }
     }
-    noStroke();
   }
-  
-//   line(50, 0, 50, height);
 
-
+  fill(240);
   rect(height, 0, width-height, height);
 
   fill(255);
@@ -54,11 +54,14 @@ function draw() {
   }
 
   fill(0);
-  textSize(30);
   textAlign(CENTER, CENTER);
+  textSize(30);
   text("Try to put down eight queens so that none of them can take any of the others.", height + 10, 50, width-height-20);
+  textSize(48);
   text("Remaining: " + (8 - q.length), height + 10, height/2, width-height-20);
-
+  textSize(16);
+  text("(Press escape to toggle guides)", height + 10, height-150, width-height-20);
+  
   check();
 }
 
